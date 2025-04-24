@@ -1,0 +1,26 @@
+##########################################################
+# Author      : Jerzy 'Yuri' Kramarz (op7ic)             #
+# Version     : 1.0                                      #
+# Type        : Terraform/Ansible                        #
+# Description : BlueTeam.Lab. See README.md for details  # 
+##########################################################
+# Excellent idea on how to run this https://www.azurecitadel.com/packeransible/dynamic/
+plugin: azure.azcollection.azure_rm
+auth_source: auto
+
+include_vm_resource_groups:
+ - blueteam-lab
+ 
+# This needs to correspond to tags added to each host in 'main.tf' file 
+conditional_groups:
+  domain_controller: "tags.kind == 'BlueTeam-DC'"
+  workstations: "tags.kind == 'BlueTeam-workstation'"
+  wazuh: "tags.kind == 'BlueTeam-Wazuh'"
+
+keyed_groups:
+- prefix: tag
+  key: tags
+  
+exclude_host_filters:
+# excludes hosts that are powered off
+- powerstate != 'running'

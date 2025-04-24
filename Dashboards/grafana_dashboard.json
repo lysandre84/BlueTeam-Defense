@@ -1,0 +1,7 @@
+{
+  "dashboard": {
+    "title": "Security Overview",
+    "panels": []
+  },
+  "overwrite": true
+}

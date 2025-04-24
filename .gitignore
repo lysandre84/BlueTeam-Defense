@@ -1,0 +1,18 @@
+# Python
+__pycache__/
+*.py[cod]
+
+# Go
+*.exe
+/bin/
+/pkg/
+
+# Bash logs
+*.log
+
+# IDE
+.vscode/
+/*.swp
+
+# Temp
+/tmp/*

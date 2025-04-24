@@ -1,0 +1,5 @@
+pandas
+requests
+splunk-sdk
+flake8
+jq

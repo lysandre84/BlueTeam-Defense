@@ -1,0 +1,28 @@
+##########################################################
+# Author      : Jerzy 'Yuri' Kramarz (op7ic)             #
+# Version     : 1.0                                      #
+# Type        : Terraform/Ansible                        #
+# Description : BlueTeam.Lab. See README.md for details  # 
+##########################################################
+---
+- name: Configure Windows workstations
+  hosts: workstations
+  gather_facts: no
+  roles:
+  - role: domain-member
+  - role: patch
+    tags: [ patch ]
+  - role: sysmon
+    tags: [ symon ]
+  - role: wazuhagent
+    tags: [ wazuhagent ]
+  - role: winlogbeat
+    tags: [ winlogbeat ]
+  - role: monitor
+    tags: [ monitor ]
+  - role: velociraptorclient
+    tags: [ velociraptorclient ]
+  - role: osqueryagent
+    tags: [ osqueryagent ]
+  - role: reboot
+    tags: [ reboot ]
