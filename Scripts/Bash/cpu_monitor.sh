@@ -27,7 +27,7 @@ LOG_FILE="/var/log/cpu_monitor.log"
 
 # Valeurs par défaut
 DEFAULT_THRESHOLD=80
-DEFAULT_EMAIL="admin@example.com"
+DEFAULT_EMAIL="toto@example.com"
 DEFAULT_INTERVAL=60
 
 # Chargement de la configuration

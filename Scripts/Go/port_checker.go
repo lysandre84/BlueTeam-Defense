@@ -31,14 +31,14 @@ import (
     "time"
 )
 
-// result holds the scan outcome for a port
+// result retient le résultat de l’analyse pour un port
 type result struct {
     port   string
     open   bool
     err    error
 }
 
-// scanPort tries to open a TCP connection with timeout
+// scanPort tente d’ouvrir une connexion TCP avec un délai d’attente
 func scanPort(host, port string, timeout time.Duration, wg *sync.WaitGroup, ch chan<- result) {
     defer wg.Done()
     addr := net.JoinHostPort(host, port)
@@ -67,19 +67,19 @@ func main() {
     var wg sync.WaitGroup
     results := make(chan result, len(ports))
 
-    // Launch scans in parallel
+    // Lancer les analyses en parallèle
     for _, port := range ports {
         wg.Add(1)
         go scanPort(host, strings.TrimSpace(port), timeout, &wg, results)
     }
 
-    // Close results channel when done
+    // Fermer le canal de résultats une fois terminé
     go func() {
         wg.Wait()
         close(results)
     }()
 
-    // Collect and print results
+    // Recueillir et imprimer les résultats
     for res := range results {
         state := "closed"
         if res.open {

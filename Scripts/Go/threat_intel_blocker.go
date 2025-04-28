@@ -35,7 +35,7 @@ import (
     "time"
 )
 
-// Config holds settings for the blocker
+// Config contient les paramètres pour le bloqueur
 type Config struct {
     FeedURL      string        `json:"feed_url"`
     Interval     time.Duration `json:"interval_sec"`
@@ -44,7 +44,7 @@ type Config struct {
     LogFile      string        `json:"log_file"`
 }
 
-// DefaultConfig provides fallback values
+// DefaultConfig fournit des valeurs de secours
 var DefaultConfig = Config{
     FeedURL:      "https://example.com/badips.json",
     Interval:     3600 * time.Second,
@@ -53,7 +53,7 @@ var DefaultConfig = Config{
     LogFile:      "/var/log/threat_intel_blocker.log",
 }
 
-// loadConfig reads a JSON config file or returns defaults
+// loadConfig lit un fichier de configuration JSON ou renvoie les valeurs par défaut
 func loadConfig(path string) Config {
     cfg := DefaultConfig
     data, err := ioutil.ReadFile(path)
@@ -65,7 +65,7 @@ func loadConfig(path string) Config {
         log.Printf("Warning: impossible de parser config %s: %v", path, err)
         return cfg
     }
-    // Merge defaults and user settings
+    // Fusionner les paramètres par défaut et utilisateur
     if userCfg.FeedURL != "" {
         cfg.FeedURL = userCfg.FeedURL
     }
@@ -84,7 +84,7 @@ func loadConfig(path string) Config {
     return cfg
 }
 
-// setupLogger configures logging to a file
+// setupLogger configure l’enregistrement dans un fichier
 func setupLogger(logFile string) {
     dir := filepath.Dir(logFile)
     if err := os.MkdirAll(dir, 0755); err != nil {
@@ -99,7 +99,7 @@ func setupLogger(logFile string) {
     log.Println("=== threat_intel_blocker démarré ===")
 }
 
-// fetchFeed retrieves the list of bad IPs from the configured URL
+// fetchFeed récupère la liste des mauvais IP de l’URL configurée
 func fetchFeed(url string) ([]string, error) {
     resp, err := http.Get(url)
     if err != nil {
@@ -117,15 +117,15 @@ func fetchFeed(url string) ([]string, error) {
     return ips, nil
 }
 
-// ensureChain creates the iptables chain if not exists
+// ensureChain crée la chaîne iptables si elle n’existe pas
 func ensureChain(ipt, chain string) {
-    exec.Command(ipt, "-N", chain).Run() // ignore error if exists
+    exec.Command(ipt, "-N", chain).Run() // ignorer l’erreur si elle existe
     exec.Command(ipt, "-C", "INPUT", "-j", chain).Run() // check
     exec.Command(ipt, "-I", "INPUT", "1", "-j", chain).Run()
     log.Printf("Chaîne iptables prête: %s", chain)
 }
 
-// blockIPs adds DROP rules for each IP not already blocked
+// blockIPs ajoute des règles DROP pour chaque IP non déjà bloquée
 func blockIPs(ipt, chain string, ips []string) {
     for _, ip := range ips {
         cmdCheck := exec.Command(ipt, "-C", "INPUT", "-s", ip, "-j", "DROP")

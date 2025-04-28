@@ -36,7 +36,7 @@ import (
     "time"
 )
 
-// Config holds monitoring settings
+// Configuration des paramètres de surveillance
 type Config struct {
     SyslogPath string   `json:"syslog_path"`
     WebhookURL string   `json:"webhook_url"`
@@ -44,7 +44,7 @@ type Config struct {
     LogFile    string   `json:"log_file"`
 }
 
-// loadConfig reads configuration from JSON or returns defaults
+// loadConfig lit la configuration depuis JSON ou renvoie les valeurs par défaut
 func loadConfig(path string) Config {
     defaultCfg := Config{
         SyslogPath: "/var/log/syslog",
@@ -73,7 +73,7 @@ func loadConfig(path string) Config {
     return cfg
 }
 
-// setupLogger configures file logging
+// setupLogger configure la journalisation des fichiers
 func setupLogger(logFile string) {
     dir := filepath.Dir(logFile)
     if err := os.MkdirAll(dir, 0755); err != nil {
@@ -87,7 +87,7 @@ func setupLogger(logFile string) {
     log.SetFlags(log.LstdFlags)
 }
 
-// tailFile follows new lines appended to a file
+// setupLogger configures file logging
 func tailFile(path string) (<-chan string, error) {
     file, err := os.Open(path)
     if err != nil {
@@ -117,7 +117,7 @@ func tailFile(path string) (<-chan string, error) {
     return lines, nil
 }
 
-// sendSlackAlert posts a message to Slack webhook
+// setupLogger configure la journalisation des fichiers
 func sendSlackAlert(webhook, msg string) {
     payload := fmt.Sprintf(`{"text":"%s"}`, msg)
     resp, err := http.Post(webhook, "application/json", strings.NewReader(payload))
@@ -128,7 +128,7 @@ func sendSlackAlert(webhook, msg string) {
     resp.Body.Close()
 }
 
-// containsKeyword checks if line contains any keyword
+// containsKeyword vérifie si la ligne contient un mot-clé
 func containsKeyword(line string, keywords []string) bool {
     lower := strings.ToLower(line)
     for _, kw := range keywords {

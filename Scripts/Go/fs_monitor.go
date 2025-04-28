@@ -34,13 +34,13 @@ import (
     "time"
 )
 
-// Config holds monitoring configuration
+// Config conserve la configuration de surveillance 
 type Config struct {
     Path    string `json:"path"`
     LogFile string `json:"log_file"`
 }
 
-// loadConfig loads configuration from file or uses defaults
+// loadConfig charge la configuration à partir du fichier ou utilise les valeurs par défaut
 func loadConfig(configPath string) Config {
     defaultCfg := Config{
         Path:    "/etc",
@@ -85,7 +85,7 @@ func watchPath(path string) {
     }
     defer watcher.Close()
 
-    // recursive watch setup
+    // configuration de la montre récursive
     filepath.Walk(path, func(p string, info os.FileInfo, err error) error {
         if err == nil && info.IsDir() {
             watcher.Add(p)
@@ -126,6 +126,6 @@ func main() {
     setupLogger(cfg.LogFile)
     log.Printf("Monitoring path: %s", cfg.Path)
 
-    // Start watcher
+    // Démarrer l’observateur
     watchPath(cfg.Path)
 }

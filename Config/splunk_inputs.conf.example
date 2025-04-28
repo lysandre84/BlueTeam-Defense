@@ -1,3 +1,0 @@
-[monitor:///var/log/auth.log]
-disabled = false
-index = main
